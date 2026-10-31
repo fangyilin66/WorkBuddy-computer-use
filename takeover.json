@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "indicatorText": "AI 正在控制电脑",
+  "position": "top",
+  "idleMs": 900,
+  "cursorIndicator": true,
+  "cursorLabel": "AI",
+  "visibleInCapture": false,
+  "stopShortcut": ""
+}
