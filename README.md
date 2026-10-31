@@ -56,11 +56,11 @@ scripts/windows-uia.ps1（PowerShell 5.1 引擎，UIA + SendInput + 截图 + OCR
 - Node.js ≥ 20（WorkBuddy 内置运行时即可）
 - 已安装并登录 WorkBuddy（作为 Skill 使用时）
 
-### 方式一：命令行克隆（推荐，便于后续更新）
+### 步骤
 
 ```bash
 # 1. 克隆到 WorkBuddy 用户技能目录（目录名必须保持 windows-computer-use）
-git clone https://github.com/fangyilin66/WorkBuddy-computer-use.git "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
+git clone https://github.com/<your-name>/WorkBuddy-computer-use.git "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
 
 # 2. 验证引擎可用（首次会拉起后台进程，约 1–3 秒）
 node "%USERPROFILE%\.workbuddy\skills\windows-computer-use\bin\wcu.mjs" health
@@ -71,20 +71,9 @@ node "%USERPROFILE%\.workbuddy\skills\windows-computer-use\bin\wcu.mjs" preview
 # 4. 重启 WorkBuddy（或重新打开会话），技能即可被自动发现
 ```
 
-以后想更新技能，在同一个目录里 `git pull` 即可。
+安装后，在 WorkBuddy 里直接说"帮我在 XX 软件里点一下/输入/看看屏幕上有什么"，技能会自动触发。  
 
-安装后，在 WorkBuddy 里直接说"帮我在 XX 软件里点一下/输入/看看屏幕上有什么"，技能会自动触发。
-
-### 方式二：下载 ZIP，在 WorkBuddy 面板里上传
-
-不想碰命令行也没关系：GitHub 页面右上角 **Code → Download ZIP** 下载整个项目，然后
-
-1. 打开 WorkBuddy → **技能 → 添加技能 → 上传技能**
-2. 把下载好的压缩包直接拖进去
-3. 面板会解压并自动识别技能（识别成功后重启 WorkBuddy 或新开一个会话即可用）
-
-> 上传入口随 WorkBuddy 版本略有差异，如果你的版本里找不到这个入口，用上面的方式一（命令行）一样可以。
-> 另外，GitHub 打包出来的顶层目录叫 `WorkBuddy-computer-use-main`，多数面板能自动处理这层目录；若导入后提示"未识别到技能"，把压缩包解压出来，把里面的 `windows-computer-use` 文件夹整个放到 `%USERPROFILE%\.workbuddy\skills\` 下即可（目录名必须是 `windows-computer-use`）。
+也可以将整个压缩包下载下来，打开workbuddy的技能->添加技能->上传技能，将压缩包拖进其中，应该就能安装（我自己没试过，这只是一个方法）
 
 ### 快速上手
 
@@ -125,8 +114,6 @@ rmdir /s /q "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
 
 卸载不会遗留任何系统级改动：技能不写注册表、不装服务、不添加开机自启，所有文件都在技能目录内（截图在 `.runtime\shots\`，随目录一起删除）。
 
-> 如果你是用"上传 ZIP"的方式装的，在 WorkBuddy 的技能面板里移除即可；面板没提供移除入口时，按上面的步骤删掉 `windows-computer-use` 文件夹同样能卸载干净。
-
 ## 注意事项
 
 **安全**
@@ -156,10 +143,8 @@ rmdir /s /q "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
 3. 引擎层（`scripts/windows-uia.ps1`）改动请同步更新 `docs/tools.md` 的参数表
 4. 提交 PR，说明动机、改动点与验证方式
 
-方向建议：更多应用的适配经验（尤其 Qt/自绘 UI）、OCR 兜底策略、新的后台派发路径、文档改进。涉及上游引擎的行为变化请先在上游仓库讨论。
-
-> 我目前还是学生，Issue 和 PR 的回复可能会慢一些，请多包涵；也欢迎直接开 Issue，我会尽量及时处理。
-
+方向建议：更多应用的适配经验（尤其 Qt/自绘 UI）、OCR 兜底策略、新的后台派发路径、文档改进。涉及上游引擎的行为变化请先在上游仓库讨论。 
+### 我是个学生，可能回的会比较慢，请见谅  
 ## 许可证
 
 [MIT](LICENSE) — 与上游 [dsh-computer-use-win](https://github.com/Yu-tao-Li/dsh-computer-use-win) 一致。
@@ -173,4 +158,4 @@ rmdir /s /q "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
 
 **WorkBuddy-computer-use** is a port of [Yu-tao-Li/dsh-computer-use-win](https://github.com/Yu-tao-Li/dsh-computer-use-win) (a DeepSeek Harness plugin, which itself derives from [cgissing/windows-computer-use](https://github.com/cgissing/windows-computer-use)) into a [WorkBuddy](https://www.workbuddy.cn) Skill. The PowerShell UIA engine is vendored unchanged; the MCP layer was replaced by a CLI + resident daemon so every capability is callable from an agent's shell tool.
 
-**Install**: clone into `%USERPROFILE%\.workbuddy\skills\windows-computer-use`, then run `node bin/wcu.mjs health` to verify — or skip the command line entirely: **Code → Download ZIP** on GitHub, then upload the archive in WorkBuddy → Skills → Add skill → Upload skill (if the panel does not pick it up, unzip and drop the `windows-computer-use` folder into `%USERPROFILE%\.workbuddy\skills\`). **Uninstall**: `node bin/wcu.mjs stop && node bin/wcu.mjs clean --all`, then delete the folder — nothing is written outside the skill directory. **Safety**: the agent really moves your mouse and types; confirm before any send/pay/delete action, press **Esc** anytime to abort. Screenshots stay local and auto-expire after 30 minutes. **License**: MIT (same as upstream), see [LICENSE](LICENSE) and [THIRD_PARTY.md](THIRD_PARTY.md) for the full provenance chain. Contributions welcome — run `node test/selftest.mjs` before submitting PRs.
+**Install**: clone into `%USERPROFILE%\.workbuddy\skills\windows-computer-use`, then run `node bin/wcu.mjs health` to verify. **Uninstall**: `node bin/wcu.mjs stop && node bin/wcu.mjs clean --all`, then delete the folder — nothing is written outside the skill directory. **Safety**: the agent really moves your mouse and types; confirm before any send/pay/delete action, press **Esc** anytime to abort. Screenshots stay local and auto-expire after 30 minutes. **License**: MIT (same as upstream), see [LICENSE](LICENSE) and [THIRD_PARTY.md](THIRD_PARTY.md) for the full provenance chain. Contributions welcome — run `node test/selftest.mjs` before submitting PRs.
