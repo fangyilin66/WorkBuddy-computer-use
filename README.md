@@ -1,6 +1,6 @@
 # WorkBuddy-computer-use
 
-**简体中文** | [English](#english)
+**简体中文** | [English](README_EN.md)
 
 > 本项目由 [Yu-tao-Li/dsh-computer-use-win](https://github.com/Yu-tao-Li/dsh-computer-use-win)（DeepSeek Harness 的 Windows 电脑操控插件）**移植**而来，核心 PowerShell 引擎原样保留，外层改造为 [WorkBuddy](https://www.workbuddy.cn) 技能（Skill）形态。上游衍生自 [cgissing/windows-computer-use](https://github.com/cgissing/windows-computer-use)。
 
@@ -60,7 +60,7 @@ scripts/windows-uia.ps1（PowerShell 5.1 引擎，UIA + SendInput + 截图 + OCR
 
 ```bash
 # 1. 克隆到 WorkBuddy 用户技能目录（目录名必须保持 windows-computer-use）
-git clone https://github.com/<your-name>/WorkBuddy-computer-use.git "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
+git clone https://github.com/fangyilin66/WorkBuddy-computer-use.git "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
 
 # 2. 验证引擎可用（首次会拉起后台进程，约 1–3 秒）
 node "%USERPROFILE%\.workbuddy\skills\windows-computer-use\bin\wcu.mjs" health
