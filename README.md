@@ -71,7 +71,9 @@ node "%USERPROFILE%\.workbuddy\skills\windows-computer-use\bin\wcu.mjs" preview
 # 4. 重启 WorkBuddy（或重新打开会话），技能即可被自动发现
 ```
 
-安装后，在 WorkBuddy 里直接说"帮我在 XX 软件里点一下/输入/看看屏幕上有什么"，技能会自动触发。
+安装后，在 WorkBuddy 里直接说"帮我在 XX 软件里点一下/输入/看看屏幕上有什么"，技能会自动触发。  
+
+也可以将整个压缩包下载下来，打开workbuddy的技能->添加技能->上传技能，将压缩包拖进其中，应该就能安装（我自己没试过，这只是一个方法）
 
 ### 快速上手
 
