@@ -150,12 +150,3 @@ rmdir /s /q "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
 [MIT](LICENSE) — 与上游 [dsh-computer-use-win](https://github.com/Yu-tao-Li/dsh-computer-use-win) 一致。
 
 版权链：`cgissing/windows-computer-use`（原始引擎）→ `Yu-tao-Li/dsh-computer-use-win`（DSH 适配与大幅扩展）→ 本项目（WorkBuddy Skill 移植）。详见 [THIRD_PARTY.md](THIRD_PARTY.md)。
-
----
-
-<a id="english"></a>
-## English
-
-**WorkBuddy-computer-use** is a port of [Yu-tao-Li/dsh-computer-use-win](https://github.com/Yu-tao-Li/dsh-computer-use-win) (a DeepSeek Harness plugin, which itself derives from [cgissing/windows-computer-use](https://github.com/cgissing/windows-computer-use)) into a [WorkBuddy](https://www.workbuddy.cn) Skill. The PowerShell UIA engine is vendored unchanged; the MCP layer was replaced by a CLI + resident daemon so every capability is callable from an agent's shell tool.
-
-**Install**: clone into `%USERPROFILE%\.workbuddy\skills\windows-computer-use`, then run `node bin/wcu.mjs health` to verify. **Uninstall**: `node bin/wcu.mjs stop && node bin/wcu.mjs clean --all`, then delete the folder — nothing is written outside the skill directory. **Safety**: the agent really moves your mouse and types; confirm before any send/pay/delete action, press **Esc** anytime to abort. Screenshots stay local and auto-expire after 30 minutes. **License**: MIT (same as upstream), see [LICENSE](LICENSE) and [THIRD_PARTY.md](THIRD_PARTY.md) for the full provenance chain. Contributions welcome — run `node test/selftest.mjs` before submitting PRs.
