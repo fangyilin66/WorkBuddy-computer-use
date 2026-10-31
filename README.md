@@ -141,8 +141,8 @@ rmdir /s /q "%USERPROFILE%\.workbuddy\skills\windows-computer-use"
 3. 引擎层（`scripts/windows-uia.ps1`）改动请同步更新 `docs/tools.md` 的参数表
 4. 提交 PR，说明动机、改动点与验证方式
 
-方向建议：更多应用的适配经验（尤其 Qt/自绘 UI）、OCR 兜底策略、新的后台派发路径、文档改进。涉及上游引擎的行为变化请先在上游仓库讨论。
-
+方向建议：更多应用的适配经验（尤其 Qt/自绘 UI）、OCR 兜底策略、新的后台派发路径、文档改进。涉及上游引擎的行为变化请先在上游仓库讨论。 
+### 我是个学生，可能回的会比较慢，请见谅  
 ## 许可证
 
 [MIT](LICENSE) — 与上游 [dsh-computer-use-win](https://github.com/Yu-tao-Li/dsh-computer-use-win) 一致。
