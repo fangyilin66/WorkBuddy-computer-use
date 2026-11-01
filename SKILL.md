@@ -160,6 +160,7 @@ $W ocr --pid 1234 --query "提交" --resolve-control true   # 文字 + 词框屏
 | 树很浅 / `hint` 提示 UIA 稀疏 | 该应用无无障碍树：改 `screenshot` + `ocr` |
 | 窗口找不到 | 可能是最小化（`isOffscreen`）或标题变了：`list-windows --include-invisible true` |
 | 中文打不进去 | 用 `--method clipboard`，或用 `--text-file` 传文本文件 |
+| 一律报 `No top-level window matched` | 目标窗是子窗（如 LabVIEW 的 `LVDChild`，父窗 0×0）：**去掉所有 target 参数**，改 `screenshot --scope desktop` + 绝对坐标点击 |
 | 焦点跑掉 / 前台被抢 | 目标窗口 `activate:true` 需显式加 `--activate true`；否则默认"借前台再归还" |
 | 截图占空间 / 想马上清掉 | `wcu clean`（30 分钟、40 张内本就会自动清） |
 
@@ -176,6 +177,30 @@ $W ocr --pid 1234 --query "提交" --resolve-control true   # 文字 + 词框屏
 
 **坐标换算铁律**：截图返回的 `bounds` + `imageScale` 才是真值（`screen = bounds.origin + 图像像素 / imageScale`）。查看器显示时会缩放，凭"眼睛里的像素"算坐标必错。
 
+## 实战要点：LabVIEW 等 NI 应用（`LVDChild` 子窗）
+
+窗口结构特殊：主窗类名 `LVDChild`，父窗 `LVFrame` 尺寸 **0×0**。因此**所有带 target 的动作都会报 `No top-level window matched`**（`activate-window` / `screenshot` / `tree` / `snapshot` / `find` 全中）。这不是"不能自动化"，是身份判定不合格。
+
+**配方：不指定窗口 + 全屏截图 + 绝对坐标。**
+
+```bash
+W='node %USERPROFILE%/.workbuddy/skills/windows-computer-use/bin/wcu.mjs'
+$W screenshot --scope desktop                          # 不查 UIA，直出整屏
+$W double-click --x 1208 --y 707                       # 开近期文件 / 点控件
+$W type-text --text "2.0"                              # 改值
+$W keypress --key "enter"                              # 或 ctrl+r 运行 / ctrl+e 切框图 / ctrl+z 撤销
+```
+
+- 加 `--hwnd/--pid` 就会重新掉进上面的错误，**一个 target 参数都别加**。
+- `alt+tab` **无效**：SendKeys 发完会把前台还原。切窗口请点任务栏，或先 `health` 看 `activeWindow`。
+- 选板/对话框会**跟着鼠标重新弹出**，每轮都要重新截图定位，不要复用旧坐标。
+- **选板搜索按本地化名称建索引**：简体中文版搜英文名必然 0 命中，要用 `等待下一个` / `数值常量` 这类中文词。
+- 选板是**非激活工具窗**，点它不夺焦点 → `type-text` 会贴到画布上成自由标签，`ctrl+z` 撤销。
+- `Ctrl+Space`（Quick Drop）被中文输入法占用，用不了。
+- **动手前先备份**：实测中进程会中途重启，未保存的改动全部丢失。
+
+完整案例、已验证/未打通清单：`docs/case-labview.md`。
+
 ## 目录
 
 ```
@@ -185,6 +210,7 @@ scripts/windows-uia.ps1      UI Automation 引擎（Windows 自带 PowerShell 5.
 scripts/windows-takeover.ps1 提示条与 Esc 监听助手（+ .cs 渲染层）
 takeover.json                提示条配置（开关/文案/位置/停止键）
 docs/tools.md                每个 action 的完整参数表
+docs/case-labview.md         LabVIEW / NI 应用案例（LVDChild 子窗绕行法、选板中文搜索、已验证清单）
 test/selftest.mjs            自检：14 步，起一个独立 WinForms 窗口验证全链路
 test/fixture.ps1             自检用的窗口（不碰用户任何程序）
 .runtime/                    daemon.log / daemon.pid / paused.json / shots（运行产物，可随时删）
